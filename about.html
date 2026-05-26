@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Dani Tremonte</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:           #F5F0EB;
+      --text:         #1A1A1A;
+      --muted:        #8A8480;
+      --accent:       #C4614A;
+      --border:       rgba(26, 26, 26, 0.10);
+      --font-display: 'Cormorant Garamond', serif;
+      --font-body:    'Inter', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Nav ── */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 32px 48px;
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      z-index: 10;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-name {
+      font-family: var(--font-display);
+      font-weight: 500;
+      font-size: 18px;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 14px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--text); }
+
+    /* ── Page hero ── */
+    .page-hero {
+      padding: 80px 48px 64px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .page-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(48px, 6vw, 80px);
+      font-weight: 500;
+      line-height: 1.0;
+      letter-spacing: -0.01em;
+      margin-bottom: 20px;
+    }
+
+    .page-hero p {
+      font-size: 18px;
+      font-weight: 300;
+      color: var(--muted);
+      max-width: 480px;
+      line-height: 1.75;
+    }
+
+    /* ── Main content grid ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+
+    /* ── Photo section ── */
+    .photo-section {
+      padding: 64px 48px;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Primary photo — tall portrait */
+    .photo-primary {
+      background: rgba(26, 26, 26, 0.07);
+      border-radius: 16px;
+      aspect-ratio: 3 / 4;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .photo-primary img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Secondary photos — row of 2 */
+    .photo-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .photo-secondary {
+      background: rgba(26, 26, 26, 0.07);
+      border-radius: 12px;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+    }
+
+    .photo-secondary img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .photo-caption {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 12px;
+      text-align: center;
+    }
+
+    /* ── Bio section ── */
+    .bio-section {
+      padding: 64px 48px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .bio-section h2 {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 32px;
+    }
+
+    .bio-section p {
+      font-size: 17px;
+      font-weight: 300;
+      line-height: 1.85;
+      color: var(--text);
+    }
+
+    .bio-section p + p { margin-top: 20px; }
+
+    .bio-section p strong { font-weight: 500; }
+
+    /* ── Timeline / experience ── */
+    .experience-section {
+      grid-column: 1 / -1;
+      padding: 64px 48px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .experience-section h2 {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 40px;
+    }
+
+    .experience-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+    }
+
+    .experience-item { }
+
+    .experience-item .year {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+
+    .experience-item .company {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .experience-item .role {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* ── Footer ── */
+    footer {
+      padding: 28px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-copy { font-size: 13px; color: var(--muted); }
+
+    .footer-links { display: flex; gap: 24px; }
+
+    .footer-links a {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--accent); }
+
+    /* ── Mobile ── */
+    @media (max-width: 768px) {
+      nav { padding: 20px 24px; }
+      .page-hero { padding: 56px 24px 48px; }
+      .about-grid { grid-template-columns: 1fr; }
+      .photo-section { padding: 48px 24px; border-right: none; }
+      .bio-section { padding: 48px 24px; }
+      .experience-section { padding: 48px 24px; }
+      .experience-list { grid-template-columns: 1fr; gap: 28px; }
+      footer { padding: 28px 24px; flex-direction: column; gap: 16px; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Navigation ── -->
+  <nav>
+    <a href="index.html" class="nav-name">Dani Tremonte</a>
+    <ul class="nav-links">
+      <li><a href="index.html#work">Work</a></li>
+      <li><a href="about.html" class="active">About</a></li>
+      <li><a href="mailto:dani.tremonte@gmail.com">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── Page hero ── -->
+  <div class="page-hero">
+    <h1>Dani Tremonte</h1>
+    <p>Senior Product Designer based in New York. I design AI products — and I build them.</p>
+  </div>
+
+  <!-- ── Main grid ── -->
+  <div class="about-grid">
+
+    <!-- Photos column -->
+    <div class="photo-section">
+
+      <!-- Primary portrait photo -->
+      <div class="photo-primary">
+        <!--
+          Replace with: <img src="assets/photo-portrait.jpg" alt="Dani Tremonte">
+        -->
+      </div>
+
+      <!-- Two secondary photos -->
+      <div class="photo-row">
+        <div class="photo-secondary">
+          <!--
+            Replace with: <img src="assets/photo-2.jpg" alt="">
+            Ideas: working at desk, at a design event, with the Everydrop app
+          -->
+        </div>
+        <div class="photo-secondary">
+          <!--
+            Replace with: <img src="assets/photo-3.jpg" alt="">
+          -->
+        </div>
+      </div>
+      <p class="photo-caption">New York, 2026</p>
+
+    </div>
+
+    <!-- Bio column -->
+    <div class="bio-section">
+      <h2>About me</h2>
+
+      <p>
+        I'm a Senior Product Designer with 10 years of experience building
+        products people actually use. I spent 6+ years at <strong>LinkedIn</strong>
+        leading design for AI-powered experiences — most recently as the most
+        senior designer on the AI + Intelligence track for LinkedIn Learning,
+        where I worked across MCP integrations, Copilot flows, and AI-native
+        design patterns at a scale of 900M+ users.
+      </p>
+
+      <p>
+        Before LinkedIn I designed at <strong>American Express</strong>, Memori,
+        and Frameology — and before that I spent years in marketing and enterprise
+        sales, which is why I care as much about outcomes as I do about craft.
+      </p>
+
+      <p>
+        In 2024 I founded <strong>Everydrop</strong> — a breastfeeding and lactation
+        app for new moms, live on the App Store, grounded in content validated by
+        certified lactation consultants. I designed it, I launched it, and I now
+        iterate on it using Claude Code. Building a product from zero gave me a
+        different relationship with design decisions: every choice has a cost.
+      </p>
+
+      <p>
+        I'm from Brazil and I live in New York. I work in English and Portuguese.
+        I'm looking for my next role designing AI products that change how people work.
+      </p>
+    </div>
+
+    <!-- Experience row (full width) -->
+    <div class="experience-section">
+      <h2>Experience</h2>
+      <div class="experience-list">
+        <div class="experience-item">
+          <p class="year">2020 – 2026</p>
+          <p class="company">LinkedIn</p>
+          <p class="role">Senior Product Designer — AI + Intelligence</p>
+        </div>
+        <div class="experience-item">
+          <p class="year">2016 – 2020</p>
+          <p class="company">American Express</p>
+          <p class="role">Senior Product Designer</p>
+        </div>
+        <div class="experience-item">
+          <p class="year">2024 – present</p>
+          <p class="company">Everydrop</p>
+          <p class="role">Founder + Designer</p>
+        </div>
+        <div class="experience-item">
+          <p class="year">2015 – 2016</p>
+          <p class="company">Memori</p>
+          <p class="role">UX Designer</p>
+        </div>
+        <div class="experience-item">
+          <p class="year">2012 – 2015</p>
+          <p class="company">Shutterstock</p>
+          <p class="role">Digital Marketing + Enterprise Sales</p>
+        </div>
+        <div class="experience-item">
+          <p class="year">2016</p>
+          <p class="company">General Assembly</p>
+          <p class="role">Certificate, UX Design</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <span class="footer-copy">© 2026 Dani Tremonte</span>
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/danitremonte" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="mailto:dani.tremonte@gmail.com">Email</a>
+      <a href="#" target="_blank" rel="noopener">Resume ↗</a>
+    </div>
+  </footer>
+
+</body>
+</html>

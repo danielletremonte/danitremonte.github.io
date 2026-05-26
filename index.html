@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dani Tremonte — Product Designer</title>
+
+  <!-- Cormorant Garamond (display) + Inter (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── Design tokens ── */
+    :root {
+      --bg:           #F5F0EB;
+      --text:         #1A1A1A;
+      --muted:        #8A8480;
+      --accent:       #C4614A;
+      --border:       rgba(26, 26, 26, 0.10);
+      --font-display: 'Cormorant Garamond', serif;
+      --font-body:    'Inter', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Nav ── */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 32px 48px;
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      z-index: 10;
+    }
+
+    .nav-name {
+      font-family: var(--font-display);
+      font-weight: 500;
+      font-size: 18px;
+      letter-spacing: 0.01em;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── Hero ── */
+    .hero {
+      display: grid;
+      grid-template-columns: 55% 45%;
+      gap: 48px;
+      align-items: center;
+      padding: 72px 48px 80px;
+      min-height: calc(100vh - 88px); /* fills most of the viewport */
+    }
+
+    .hero-content { max-width: 580px; }
+
+    .hero-label {
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(56px, 7vw, 96px);
+      font-weight: 500;             /* Cormorant reads best at 500 — not too thin */
+      line-height: 1.0;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      margin-bottom: 32px;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      font-size: 17px;
+      font-weight: 300;
+      color: var(--muted);
+      max-width: 480px;
+      line-height: 1.75;
+      margin-bottom: 40px;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      background: var(--text);
+      color: var(--bg);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      border-radius: 100px;
+      transition: opacity 0.2s ease;
+    }
+
+    .btn-primary:hover { opacity: 0.72; }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      background: transparent;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      border-radius: 100px;
+      border: 1px solid var(--border);
+      transition: border-color 0.2s ease;
+    }
+
+    .btn-secondary:hover { border-color: var(--text); }
+
+    /* ── Hero animated visual ── */
+    .hero-visual {
+      position: relative;
+      height: 460px;
+      border-radius: 28px;
+      overflow: hidden;
+
+      /* very subtle warm tint so the box is visible */
+      background: rgba(196, 97, 74, 0.04);
+      border: 1px solid rgba(196, 97, 74, 0.10);
+    }
+
+    /* Soft gradient orbs that float independently */
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(72px);
+      will-change: transform;
+    }
+
+    .blob-1 {
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(196, 97, 74, 0.55), transparent 70%);
+      top: -60px; right: -60px;
+      animation: floatA 14s ease-in-out infinite;
+    }
+
+    .blob-2 {
+      width: 240px; height: 240px;
+      background: radial-gradient(circle, rgba(210, 140, 90, 0.40), transparent 70%);
+      bottom: 20px; left: 20px;
+      animation: floatB 11s ease-in-out infinite;
+    }
+
+    .blob-3 {
+      width: 180px; height: 180px;
+      background: radial-gradient(circle, rgba(232, 200, 160, 0.55), transparent 70%);
+      top: 45%; left: 40%;
+      animation: floatC 9s ease-in-out infinite;
+    }
+
+    @keyframes floatA {
+      0%, 100% { transform: translate(0, 0); }
+      50%       { transform: translate(-40px, 40px); }
+    }
+
+    @keyframes floatB {
+      0%, 100% { transform: translate(0, 0); }
+      50%       { transform: translate(30px, -30px); }
+    }
+
+    @keyframes floatC {
+      0%, 100% { transform: translate(0, 0); }
+      33%       { transform: translate(20px, -25px); }
+      66%       { transform: translate(-25px, 15px); }
+    }
+
+    /* ── Work section ── */
+    .work { padding: 40px 0 96px; }
+
+    .section-label {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 0 48px;
+      margin-bottom: 40px;
+    }
+
+    /* ── Case study row ── */
+    .case-study {
+      padding: 56px 48px;
+      border-top: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 72px;
+      align-items: center;
+      transition: background 0.3s ease;
+    }
+
+    .case-study:last-child { border-bottom: 1px solid var(--border); }
+    .case-study:hover { background: rgba(26, 26, 26, 0.025); }
+
+    /* alternating layout: visual left on even rows */
+    .case-study:nth-child(even) .case-study-visual { order: -1; }
+
+    .case-study-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .case-study-number {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 0.06em;
+    }
+
+    .case-study h2 {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 2.8vw, 42px);
+      font-weight: 500;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+    }
+
+    .case-study-desc {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .case-study-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    .tag {
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 12px;
+      background: rgba(26, 26, 26, 0.07);
+      border-radius: 100px;
+      color: var(--muted);
+    }
+
+    /* ── GIF / visual container ── */
+    .case-study-visual {
+      background: rgba(26, 26, 26, 0.06);
+      border-radius: 16px;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.4s ease;
+    }
+
+    .case-study:hover .case-study-visual { transform: scale(1.015); }
+
+    .case-study-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .placeholder-text {
+      font-size: 13px;
+      color: var(--muted);
+      text-align: center;
+      padding: 24px;
+      line-height: 1.6;
+    }
+
+    /* ── About (inline, brief) ── */
+    .about-teaser {
+      padding: 80px 48px;
+      border-top: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+
+    .about-label {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding-top: 4px;
+    }
+
+    .about-body { }
+
+    .about-body p {
+      font-size: 18px;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--text);
+    }
+
+    .about-body p strong { font-weight: 500; }
+
+    .about-body p + p { margin-top: 20px; }
+
+    .about-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 28px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(196, 97, 74, 0.3);
+      padding-bottom: 2px;
+      transition: border-color 0.2s ease;
+    }
+
+    .about-link:hover { border-color: var(--accent); }
+
+    /* ── Footer ── */
+    footer {
+      padding: 28px 48px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-copy {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover { color: var(--accent); }
+
+    /* ── Mobile ── */
+    @media (max-width: 768px) {
+      nav { padding: 20px 24px; }
+
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 64px 24px 56px;
+        min-height: auto;
+        gap: 40px;
+      }
+
+      .hero-visual { height: 280px; }
+
+      .section-label { padding: 0 24px; }
+
+      .case-study {
+        padding: 40px 24px;
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .case-study:nth-child(even) .case-study-visual { order: 0; }
+
+      .about-teaser {
+        padding: 64px 24px;
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      footer {
+        padding: 28px 24px;
+        flex-direction: column;
+        gap: 16px;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Navigation ── -->
+  <nav>
+    <a href="/" class="nav-name">Dani Tremonte</a>
+    <ul class="nav-links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="mailto:dani.tremonte@gmail.com">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── Hero ── -->
+  <section class="hero">
+
+    <div class="hero-content">
+      <p class="hero-label">Senior Product Designer · New York</p>
+      <h1>I design <em>AI products.</em><br>I also build them.</h1>
+      <p class="hero-sub">
+        6+ years at LinkedIn designing AI at scale.
+        Founded Everydrop — live on the App Store.
+        Now building with Claude Code.
+      </p>
+      <div class="hero-ctas">
+        <a href="#work" class="btn-primary">View work ↓</a>
+        <a href="mailto:dani.tremonte@gmail.com" class="btn-secondary">Get in touch</a>
+      </div>
+    </div>
+
+    <!-- Animated gradient blob visual -->
+    <div class="hero-visual" aria-hidden="true">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <div class="blob blob-3"></div>
+    </div>
+
+  </section>
+
+  <!-- ── Work ── -->
+  <section class="work" id="work">
+    <p class="section-label">Selected work</p>
+
+    <!-- 01 — LinkedIn Learning AI -->
+    <article class="case-study">
+      <div class="case-study-meta">
+        <span class="case-study-number">01</span>
+        <h2>Designing AI before everyone had to</h2>
+        <p class="case-study-desc">
+          Led AI + Intelligence design at LinkedIn Learning — integrating MCP, Copilot,
+          and AI-native patterns across a platform used by 900M+ professionals.
+        </p>
+        <div class="case-study-tags">
+          <span class="tag">AI product design</span>
+          <span class="tag">Design leadership</span>
+          <span class="tag">LinkedIn · 2021–2026</span>
+        </div>
+      </div>
+      <div class="case-study-visual">
+        <!--
+          Replace with: <img src="assets/linkedin-ai.gif" alt="LinkedIn Learning AI">
+        -->
+        <p class="placeholder-text">GIF coming soon<br><small>assets/linkedin-ai.gif</small></p>
+      </div>
+    </article>
+
+    <!-- 02 — Everydrop -->
+    <article class="case-study">
+      <div class="case-study-meta">
+        <span class="case-study-number">02</span>
+        <h2>From idea to App Store — then back to the code</h2>
+        <p class="case-study-desc">
+          Founded Everydrop in 2024: a breastfeeding app for new moms built on real
+          lactation science. Designed it, shipped it, then started building it
+          with Claude Code.
+        </p>
+        <div class="case-study-tags">
+          <span class="tag">Founder</span>
+          <span class="tag">0→1 product</span>
+          <span class="tag">iOS · Live</span>
+        </div>
+      </div>
+      <div class="case-study-visual">
+        <!--
+          Replace with: <img src="assets/everydrop.gif" alt="Everydrop app">
+        -->
+        <p class="placeholder-text">GIF coming soon<br><small>assets/everydrop.gif</small></p>
+      </div>
+    </article>
+
+    <!-- 03 — AI Design System -->
+    <article class="case-study">
+      <div class="case-study-meta">
+        <span class="case-study-number">03</span>
+        <h2>Building the design system AI products run on</h2>
+        <p class="case-study-desc">
+          Created the AI design system library for LinkedIn Learning — components,
+          patterns, and tokens that gave 10+ designers a shared language for
+          shipping AI features fast.
+        </p>
+        <div class="case-study-tags">
+          <span class="tag">Design systems</span>
+          <span class="tag">AI components</span>
+          <span class="tag">LinkedIn · 2023–2025</span>
+        </div>
+      </div>
+      <div class="case-study-visual">
+        <!--
+          Replace with: <img src="assets/design-system.gif" alt="LinkedIn AI Design System">
+        -->
+        <p class="placeholder-text">GIF coming soon<br><small>assets/design-system.gif</small></p>
+      </div>
+    </article>
+
+  </section>
+
+  <!-- ── About teaser (links to full about page) ── -->
+  <section class="about-teaser" id="about">
+    <p class="about-label">About</p>
+    <div class="about-body">
+      <p>
+        I'm <strong>Dani Tremonte</strong>, a Senior Product Designer based in New York.
+        For 6+ years at LinkedIn I led design for AI-powered products — most recently
+        as the most senior designer on the AI + Intelligence track for LinkedIn Learning.
+      </p>
+      <p>
+        In 2024 I founded <strong>Everydrop</strong>, a breastfeeding app live on the
+        App Store. I design it and build it — currently using Claude Code to iterate
+        directly in code.
+      </p>
+      <a href="about.html" class="about-link">More about me ↗</a>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <span class="footer-copy">© 2026 Dani Tremonte</span>
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/danitremonte" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="mailto:dani.tremonte@gmail.com">Email</a>
+      <a href="#" target="_blank" rel="noopener">Resume ↗</a>
+    </div>
+  </footer>
+
+</body>
+</html>
