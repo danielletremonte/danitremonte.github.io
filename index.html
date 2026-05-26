@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dani Tremonte — Product Designer</title>
 
-  <!-- Cormorant Garamond (display) + Inter (body) -->
+  <!-- Syne (display) + Inter (body) from Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
   <style>
     /* ── Reset ── */
@@ -21,7 +21,7 @@
       --muted:        #8A8480;
       --accent:       #C4614A;
       --border:       rgba(26, 26, 26, 0.10);
-      --font-display: 'Cormorant Garamond', serif;
+      --font-display: 'Syne', sans-serif;
       --font-body:    'Inter', sans-serif;
     }
 
@@ -50,9 +50,9 @@
 
     .nav-name {
       font-family: var(--font-display);
-      font-weight: 500;
-      font-size: 18px;
-      letter-spacing: 0.01em;
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: -0.01em;
       text-decoration: none;
       color: var(--text);
     }
@@ -75,21 +75,14 @@
 
     /* ── Hero ── */
     .hero {
-      display: grid;
-      grid-template-columns: 55% 45%;
-      gap: 48px;
-      align-items: center;
-      padding: 72px 48px 80px;
-      min-height: calc(100vh - 88px); /* fills most of the viewport */
+      padding: 96px 48px 80px;
+      max-width: 900px;
     }
 
-    .hero-content { max-width: 580px; }
-
     .hero-label {
-      font-family: var(--font-body);
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 500;
-      letter-spacing: 0.09em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--muted);
       margin-bottom: 28px;
@@ -97,24 +90,24 @@
 
     .hero h1 {
       font-family: var(--font-display);
-      font-size: clamp(56px, 7vw, 96px);
-      font-weight: 500;             /* Cormorant reads best at 500 — not too thin */
+      font-size: clamp(52px, 8vw, 92px);
+      font-weight: 800;
       line-height: 1.0;
-      letter-spacing: -0.01em;
+      letter-spacing: -0.03em;
       color: var(--text);
       margin-bottom: 32px;
     }
 
     .hero h1 em {
-      font-style: italic;
+      font-style: normal;
       color: var(--accent);
     }
 
     .hero-sub {
-      font-size: 17px;
+      font-size: 18px;
       font-weight: 300;
       color: var(--muted);
-      max-width: 480px;
+      max-width: 520px;
       line-height: 1.75;
       margin-bottom: 40px;
     }
@@ -157,63 +150,6 @@
     }
 
     .btn-secondary:hover { border-color: var(--text); }
-
-    /* ── Hero animated visual ── */
-    .hero-visual {
-      position: relative;
-      height: 460px;
-      border-radius: 28px;
-      overflow: hidden;
-
-      /* very subtle warm tint so the box is visible */
-      background: rgba(196, 97, 74, 0.04);
-      border: 1px solid rgba(196, 97, 74, 0.10);
-    }
-
-    /* Soft gradient orbs that float independently */
-    .blob {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(72px);
-      will-change: transform;
-    }
-
-    .blob-1 {
-      width: 300px; height: 300px;
-      background: radial-gradient(circle, rgba(196, 97, 74, 0.55), transparent 70%);
-      top: -60px; right: -60px;
-      animation: floatA 14s ease-in-out infinite;
-    }
-
-    .blob-2 {
-      width: 240px; height: 240px;
-      background: radial-gradient(circle, rgba(210, 140, 90, 0.40), transparent 70%);
-      bottom: 20px; left: 20px;
-      animation: floatB 11s ease-in-out infinite;
-    }
-
-    .blob-3 {
-      width: 180px; height: 180px;
-      background: radial-gradient(circle, rgba(232, 200, 160, 0.55), transparent 70%);
-      top: 45%; left: 40%;
-      animation: floatC 9s ease-in-out infinite;
-    }
-
-    @keyframes floatA {
-      0%, 100% { transform: translate(0, 0); }
-      50%       { transform: translate(-40px, 40px); }
-    }
-
-    @keyframes floatB {
-      0%, 100% { transform: translate(0, 0); }
-      50%       { transform: translate(30px, -30px); }
-    }
-
-    @keyframes floatC {
-      0%, 100% { transform: translate(0, 0); }
-      33%       { transform: translate(20px, -25px); }
-      66%       { transform: translate(-25px, 15px); }
-    }
 
     /* ── Work section ── */
     .work { padding: 40px 0 96px; }
@@ -260,16 +196,16 @@
 
     .case-study h2 {
       font-family: var(--font-display);
-      font-size: clamp(28px, 2.8vw, 42px);
-      font-weight: 500;
+      font-size: clamp(24px, 2.8vw, 36px);
+      font-weight: 800;
       line-height: 1.1;
-      letter-spacing: -0.01em;
+      letter-spacing: -0.02em;
     }
 
     .case-study-desc {
       font-size: 15px;
       color: var(--muted);
-      line-height: 1.7;
+      line-height: 1.65;
     }
 
     .case-study-tags {
@@ -317,7 +253,7 @@
       line-height: 1.6;
     }
 
-    /* ── About (inline, brief) ── */
+    /* ── About teaser (links to full about page) ── */
     .about-teaser {
       padding: 80px 48px;
       border-top: 1px solid var(--border);
@@ -330,14 +266,12 @@
     .about-label {
       font-family: var(--font-display);
       font-size: 13px;
-      font-weight: 500;
+      font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--muted);
       padding-top: 4px;
     }
-
-    .about-body { }
 
     .about-body p {
       font-size: 18px;
@@ -375,15 +309,9 @@
       align-items: center;
     }
 
-    .footer-copy {
-      font-size: 13px;
-      color: var(--muted);
-    }
+    .footer-copy { font-size: 13px; color: var(--muted); }
 
-    .footer-links {
-      display: flex;
-      gap: 24px;
-    }
+    .footer-links { display: flex; gap: 24px; }
 
     .footer-links a {
       font-size: 14px;
@@ -399,14 +327,7 @@
     @media (max-width: 768px) {
       nav { padding: 20px 24px; }
 
-      .hero {
-        grid-template-columns: 1fr;
-        padding: 64px 24px 56px;
-        min-height: auto;
-        gap: 40px;
-      }
-
-      .hero-visual { height: 280px; }
+      .hero { padding: 64px 24px 56px; }
 
       .section-label { padding: 0 24px; }
 
@@ -447,28 +368,17 @@
 
   <!-- ── Hero ── -->
   <section class="hero">
-
-    <div class="hero-content">
-      <p class="hero-label">Senior Product Designer · New York</p>
-      <h1>I design <em>AI products.</em><br>I also build them.</h1>
-      <p class="hero-sub">
-        6+ years at LinkedIn designing AI at scale.
-        Founded Everydrop — live on the App Store.
-        Now building with Claude Code.
-      </p>
-      <div class="hero-ctas">
-        <a href="#work" class="btn-primary">View work ↓</a>
-        <a href="mailto:dani.tremonte@gmail.com" class="btn-secondary">Get in touch</a>
-      </div>
+    <p class="hero-label">Senior Product Designer · New York</p>
+    <h1>I design <em>AI products.</em><br>I also build them.</h1>
+    <p class="hero-sub">
+      6+ years at LinkedIn designing AI at scale.
+      Founded Everydrop — live on the App Store.
+      Now building with Claude Code.
+    </p>
+    <div class="hero-ctas">
+      <a href="#work" class="btn-primary">View work ↓</a>
+      <a href="mailto:dani.tremonte@gmail.com" class="btn-secondary">Get in touch</a>
     </div>
-
-    <!-- Animated gradient blob visual -->
-    <div class="hero-visual" aria-hidden="true">
-      <div class="blob blob-1"></div>
-      <div class="blob blob-2"></div>
-      <div class="blob blob-3"></div>
-    </div>
-
   </section>
 
   <!-- ── Work ── -->
@@ -548,7 +458,7 @@
 
   </section>
 
-  <!-- ── About teaser (links to full about page) ── -->
+  <!-- ── About teaser ── -->
   <section class="about-teaser" id="about">
     <p class="about-label">About</p>
     <div class="about-body">
