@@ -3,25 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dani Tremonte — Product Designer</title>
+  <title>Dani Tremonte — D2</title>
 
-  <!-- Syne (display) + Inter (body) from Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
   <style>
-    /* ── Reset ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* ── Design tokens ── */
     :root {
       --bg:           #F5F0EB;
       --text:         #1A1A1A;
       --muted:        #8A8480;
       --accent:       #C4614A;
       --border:       rgba(26, 26, 26, 0.10);
-      --font-display: 'Syne', sans-serif;
+      --font-display: 'Fraunces', serif;
       --font-body:    'Inter', sans-serif;
     }
 
@@ -41,31 +38,29 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 32px 48px;
-      position: sticky;
+      padding: 32px 64px;
+      position: fixed;
       top: 0;
-      background: var(--bg);
+      left: 0;
+      right: 0;
+      background: transparent;
       z-index: 10;
+      transition: background 0.3s ease;
     }
 
     .nav-name {
       font-family: var(--font-display);
-      font-weight: 700;
-      font-size: 15px;
-      letter-spacing: -0.01em;
+      font-weight: 600;
+      font-style: italic;
+      font-size: 17px;
       text-decoration: none;
       color: var(--text);
     }
 
-    .nav-links {
-      display: flex;
-      gap: 32px;
-      list-style: none;
-    }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
 
     .nav-links a {
       font-size: 14px;
-      font-weight: 400;
       color: var(--muted);
       text-decoration: none;
       transition: color 0.2s ease;
@@ -73,49 +68,109 @@
 
     .nav-links a:hover { color: var(--text); }
 
-    /* ── Hero ── */
+    /* ── Hero — name spans full viewport width ── */
     .hero {
-      padding: 96px 48px 80px;
-      max-width: 900px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 80px 20px;
+      position: relative;
+      background: #fff;
     }
 
     .hero-label {
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 500;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.09em;
       text-transform: uppercase;
       color: var(--muted);
-      margin-bottom: 28px;
+      margin-bottom: 24px;
     }
 
+    /* Single line scaled to fill the viewport width */
     .hero h1 {
       font-family: var(--font-display);
-      font-size: clamp(52px, 8vw, 92px);
-      font-weight: 800;
-      line-height: 1.0;
+      font-variation-settings: "opsz" 144;
+      font-size: 10.5vw;
+      font-weight: 700;
+      line-height: 1;
       letter-spacing: -0.03em;
-      color: var(--text);
+      white-space: nowrap;
       margin-bottom: 32px;
+      color: var(--text);
     }
 
-    .hero h1 em {
+    /* Hide default cursor site-wide */
+    * { cursor: none !important; }
+
+    /* ── Custom cursor dot ── */
+    .cursor-dot {
+      position: fixed;
+      top: -100px;
+      left: -100px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--accent);
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: background 0.3s ease;
+      will-change: left, top;
+    }
+
+    .cursor-dot.on-name {
+      background: #38BDF8; /* sky blue — high contrast against dark letters */
+    }
+
+    /* Tagline below the name */
+    .hero-tagline {
+      font-family: var(--font-display);
+      font-variation-settings: "opsz" 30;
+      font-size: clamp(1rem, 1.6vw, 1.8rem);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--muted);
+    }
+
+    .hero-tagline em {
       font-style: normal;
       color: var(--accent);
+      font-weight: 600;
     }
 
-    .hero-sub {
-      font-size: 18px;
-      font-weight: 300;
-      color: var(--muted);
-      max-width: 520px;
-      line-height: 1.75;
-      margin-bottom: 40px;
-    }
-
-    .hero-ctas {
+    /* Circle arrow button at the bottom */
+    .scroll-hint {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      border: 1.5px solid var(--text);
+      background: var(--text);
       display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      color: var(--bg);
+      text-decoration: none;
+      font-size: 20px;
+      animation: nudge 2.5s ease-in-out infinite;
+      transition: background 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+    }
+
+    .scroll-hint:hover {
+      background: transparent;
+      color: var(--text);
+    }
+
+    @keyframes nudge {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(8px); }
     }
 
     .btn-primary {
@@ -131,7 +186,6 @@
       border-radius: 100px;
       transition: opacity 0.2s ease;
     }
-
     .btn-primary:hover { opacity: 0.72; }
 
     .btn-secondary {
@@ -148,11 +202,10 @@
       border: 1px solid var(--border);
       transition: border-color 0.2s ease;
     }
-
     .btn-secondary:hover { border-color: var(--text); }
 
     /* ── Work section ── */
-    .work { padding: 40px 0 96px; }
+    .work { padding: 40px 0 96px; background: #FAF7F4; }
 
     .section-label {
       font-size: 12px;
@@ -160,60 +213,45 @@
       letter-spacing: 0.10em;
       text-transform: uppercase;
       color: var(--muted);
-      padding: 0 48px;
+      padding: 0 64px;
       margin-bottom: 40px;
     }
 
-    /* ── Case study row ── */
     .case-study {
-      padding: 56px 48px;
-      border-top: 1px solid var(--border);
+      padding: 56px 64px;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 72px;
       align-items: center;
       transition: background 0.3s ease;
     }
-
-    .case-study:last-child { border-bottom: 1px solid var(--border); }
-    .case-study:hover { background: rgba(26, 26, 26, 0.025); }
-
-    /* alternating layout: visual left on even rows */
     .case-study:nth-child(even) .case-study-visual { order: -1; }
 
-    .case-study-meta {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .case-study-number {
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--accent);
-      letter-spacing: 0.06em;
-    }
+    .case-study-meta { display: flex; flex-direction: column; gap: 16px; }
 
     .case-study h2 {
       font-family: var(--font-display);
-      font-size: clamp(24px, 2.8vw, 36px);
-      font-weight: 800;
-      line-height: 1.1;
-      letter-spacing: -0.02em;
+      font-variation-settings: "opsz" 30;
+      font-size: clamp(26px, 2.8vw, 38px);
+      font-weight: 600;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
     }
 
-    .case-study-desc {
-      font-size: 15px;
-      color: var(--muted);
-      line-height: 1.65;
-    }
-
-    .case-study-tags {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
+    .case-study h3 {
+      font-family: var(--font-display);
+      font-variation-settings: "opsz" 40;
+      font-size: clamp(18px, 1.6vw, 22px);
+      font-weight: 600;
+      font-style: italic;
+      color: var(--accent);
+      line-height: 1.3;
       margin-top: 4px;
     }
+
+    .case-study-desc { font-size: 15px; color: var(--muted); line-height: 1.65; }
+
+    .case-study-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
 
     .tag {
       font-size: 12px;
@@ -224,11 +262,10 @@
       color: var(--muted);
     }
 
-    /* ── GIF / visual container ── */
     .case-study-visual {
       background: rgba(26, 26, 26, 0.06);
       border-radius: 16px;
-      aspect-ratio: 4 / 3;
+      aspect-ratio: 3 / 2;
       overflow: hidden;
       display: flex;
       align-items: center;
@@ -236,14 +273,10 @@
       transition: transform 0.4s ease;
     }
 
-    .case-study:hover .case-study-visual { transform: scale(1.015); }
-
-    .case-study-visual img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
+    .case-study-visual { transition: none; }
+    .case-study-visual--auto { aspect-ratio: auto; }
+    .case-study-visual img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .case-study-visual video { width: 100%; height: auto; display: block; }
 
     .placeholder-text {
       font-size: 13px;
@@ -253,238 +286,254 @@
       line-height: 1.6;
     }
 
-    /* ── About teaser (links to full about page) ── */
+    /* ── About teaser ── */
     .about-teaser {
-      padding: 80px 48px;
-      border-top: 1px solid var(--border);
+      padding: 80px 64px;
+      background: #fff;
       display: grid;
-      grid-template-columns: 200px 1fr;
+      grid-template-columns: 380px 1fr;
       gap: 64px;
-      align-items: start;
+      align-items: center;
     }
 
-    .about-label {
+    .about-body {
+      max-width: 700px;
+    }
+
+    .about-title {
       font-family: var(--font-display);
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--muted);
-      padding-top: 4px;
+      font-variation-settings: "opsz" 144;
+      font-size: clamp(26px, 2.8vw, 38px);
+      font-weight: 600;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      margin-bottom: 20px;
     }
 
     .about-body p {
-      font-size: 18px;
-      font-weight: 300;
-      line-height: 1.8;
-      color: var(--text);
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.65;
+      color: var(--muted);
     }
-
-    .about-body p strong { font-weight: 500; }
-
-    .about-body p + p { margin-top: 20px; }
 
     .about-link {
       display: inline-flex;
+      align-self: flex-start;
       align-items: center;
       gap: 6px;
-      margin-top: 28px;
-      font-size: 14px;
+      margin-top: 16px;
+      font-size: 13px;
       font-weight: 500;
       color: var(--accent);
       text-decoration: none;
-      border-bottom: 1px solid rgba(196, 97, 74, 0.3);
+      border-bottom: 1px solid transparent;
       padding-bottom: 2px;
       transition: border-color 0.2s ease;
     }
 
     .about-link:hover { border-color: var(--accent); }
 
-    /* ── Footer ── */
-    footer {
-      padding: 28px 48px;
-      border-top: 1px solid var(--border);
+    .about-body p strong { font-weight: 500; color: var(--text); }
+    .about-body p + p { margin-top: 16px; }
+
+    .about-icons {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
+      gap: 10px;
+      margin-top: 28px;
     }
 
-    .footer-copy { font-size: 13px; color: var(--muted); }
-
-    .footer-links { display: flex; gap: 24px; }
-
-    .footer-links a {
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--text);
-      text-decoration: none;
-      transition: color 0.2s ease;
+    .about-photo {
+      overflow: hidden;
+      aspect-ratio: 3 / 4;
+      animation: morph 14s ease-in-out infinite;
+      border-radius: 62% 38% 46% 54% / 60% 44% 56% 40%;
     }
 
-    .footer-links a:hover { color: var(--accent); }
+    .about-photo:hover { animation-play-state: paused; }
 
-    /* ── Mobile ── */
-    @media (max-width: 768px) {
-      nav { padding: 20px 24px; }
+    .about-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 15%;
+      display: block;
+    }
 
-      .hero { padding: 64px 24px 56px; }
+    @keyframes morph {
+      0%   { border-radius: 62% 38% 46% 54% / 60% 44% 56% 40%; }
+      20%  { border-radius: 40% 60% 54% 46% / 48% 62% 38% 52%; }
+      40%  { border-radius: 54% 46% 38% 62% / 56% 38% 62% 44%; }
+      60%  { border-radius: 46% 54% 62% 38% / 40% 56% 44% 60%; }
+      80%  { border-radius: 58% 42% 48% 52% / 52% 46% 54% 48%; }
+      100% { border-radius: 62% 38% 46% 54% / 60% 44% 56% 40%; }
+    }
 
-      .section-label { padding: 0 24px; }
+
+    /* ── Responsive ── */
+    @media (max-width: 860px) {
+      nav { padding-left: 32px; padding-right: 32px; background: var(--bg); }
+
+      .hero { padding: 80px 32px 64px; }
+      .hero h1 { font-size: clamp(4rem, 16vw, 7rem); }
+      .hero-tagline { font-size: clamp(1rem, 4vw, 1.4rem); }
+
+      .section-label, .case-study { padding-left: 32px; padding-right: 32px; }
 
       .case-study {
-        padding: 40px 24px;
         grid-template-columns: 1fr;
         gap: 32px;
+        padding-top: 40px;
+        padding-bottom: 40px;
       }
 
       .case-study:nth-child(even) .case-study-visual { order: 0; }
 
       .about-teaser {
-        padding: 64px 24px;
+        padding: 56px 32px;
         grid-template-columns: 1fr;
-        gap: 24px;
+        gap: 32px;
       }
 
-      footer {
-        padding: 28px 24px;
-        flex-direction: column;
-        gap: 16px;
-        align-items: flex-start;
-      }
+      .about-photo { width: 240px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ── Navigation ── -->
-  <nav>
-    <a href="/" class="nav-name">Dani Tremonte</a>
-    <ul class="nav-links">
-      <li><a href="#work">Work</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="mailto:dani.tremonte@gmail.com">Contact</a></li>
-    </ul>
-  </nav>
-
-  <!-- ── Hero ── -->
   <section class="hero">
     <p class="hero-label">Senior Product Designer · New York</p>
-    <h1>I design <em>AI products.</em><br>I also build them.</h1>
-    <p class="hero-sub">
-      6+ years at LinkedIn designing AI at scale.
-      Founded Everydrop — live on the App Store.
-      Now building with Claude Code.
-    </p>
-    <div class="hero-ctas">
-      <a href="#work" class="btn-primary">View work ↓</a>
-      <a href="mailto:dani.tremonte@gmail.com" class="btn-secondary">Get in touch</a>
-    </div>
+    <h1>Dani Tremonte</h1>
+    <p class="hero-tagline">I design <em>AI products.</em> I also build them.</p>
+    <a href="#work" class="scroll-hint">↓</a>
   </section>
 
-  <!-- ── Work ── -->
   <section class="work" id="work">
-    <p class="section-label">Selected work</p>
 
-    <!-- 01 — LinkedIn Learning AI -->
     <article class="case-study">
       <div class="case-study-meta">
-        <span class="case-study-number">01</span>
-        <h2>Designing AI before everyone had to</h2>
-        <p class="case-study-desc">
-          Led AI + Intelligence design at LinkedIn Learning — integrating MCP, Copilot,
-          and AI-native patterns across a platform used by 900M+ professionals.
-        </p>
+        <h2>ChatGPT & LinkedIn Learning MCP</h2>
+        <p class="case-study-desc">Led AI + Intelligence design initiatives at LinkedIn Learning, including integrating MCP to ChatGPT, Copilot, learning agents and AI-native patterns across different platforms used by millions of users.</p>
         <div class="case-study-tags">
           <span class="tag">AI product design</span>
-          <span class="tag">Design leadership</span>
-          <span class="tag">LinkedIn · 2021–2026</span>
+          <span class="tag">Prototyping</span>
+          <span class="tag">Ambiguity & complexity</span>
         </div>
       </div>
       <div class="case-study-visual">
-        <!--
-          Replace with: <img src="assets/linkedin-ai.gif" alt="LinkedIn Learning AI">
-        -->
-        <p class="placeholder-text">GIF coming soon<br><small>assets/linkedin-ai.gif</small></p>
+        <video autoplay loop muted playsinline>
+          <source src="assets/project-mcp-lil-chatgpt-desktop.mp4-high-res2.mp4" type="video/mp4">
+        </video>
       </div>
     </article>
 
-    <!-- 02 — Everydrop -->
     <article class="case-study">
       <div class="case-study-meta">
-        <span class="case-study-number">02</span>
-        <h2>From idea to App Store — then back to the code</h2>
-        <p class="case-study-desc">
-          Founded Everydrop in 2024: a breastfeeding app for new moms built on real
-          lactation science. Designed it, shipped it, then started building it
-          with Claude Code.
-        </p>
+        <h2>Everydrop at the App Store</h2>
+        <p class="case-study-desc">Founded Everydrop in 2024: a breastfeeding app for new moms built on real lactation science. Designed it, shipped it, then started building it with Claude Code.</p>
         <div class="case-study-tags">
           <span class="tag">Founder</span>
           <span class="tag">0→1 product</span>
           <span class="tag">iOS · Live</span>
         </div>
+        <a class="about-link" href="https://apps.apple.com/us/app/everydrop-baby-feeding-sleep/id6504111298" target="_blank" rel="noopener">View on App Store ↗</a>
       </div>
-      <div class="case-study-visual">
-        <!--
-          Replace with: <img src="assets/everydrop.gif" alt="Everydrop app">
-        -->
-        <p class="placeholder-text">GIF coming soon<br><small>assets/everydrop.gif</small></p>
+      <div class="case-study-visual case-study-visual--auto">
+        <video autoplay loop muted playsinline>
+          <source src="assets/project-everydrop.mp4" type="video/mp4">
+        </video>
       </div>
     </article>
 
-    <!-- 03 — AI Design System -->
     <article class="case-study">
       <div class="case-study-meta">
-        <span class="case-study-number">03</span>
-        <h2>Building the design system AI products run on</h2>
-        <p class="case-study-desc">
-          Created the AI design system library for LinkedIn Learning — components,
-          patterns, and tokens that gave 10+ designers a shared language for
-          shipping AI features fast.
-        </p>
+        <h2>AI design system for LinkedIn Learning</h2>
+        <p class="case-study-desc">Created the AI design system library for LinkedIn Learning — components, patterns, and tokens that gave 10+ designers a shared language for shipping AI features fast.</p>
         <div class="case-study-tags">
           <span class="tag">Design systems</span>
           <span class="tag">AI components</span>
-          <span class="tag">LinkedIn · 2023–2025</span>
+          <span class="tag">Systems thinking</span>
         </div>
       </div>
       <div class="case-study-visual">
-        <!--
-          Replace with: <img src="assets/design-system.gif" alt="LinkedIn AI Design System">
-        -->
-        <p class="placeholder-text">GIF coming soon<br><small>assets/design-system.gif</small></p>
+        <img src="assets/project-LiL-AI-Library.jpg" alt="LinkedIn Learning AI design system">
       </div>
     </article>
-
   </section>
 
-  <!-- ── About teaser ── -->
   <section class="about-teaser" id="about">
-    <p class="about-label">About</p>
+    <div class="about-photo">
+      <img src="assets/photo-hero.jpg" alt="Dani Tremonte">
+    </div>
     <div class="about-body">
-      <p>
-        I'm <strong>Dani Tremonte</strong>, a Senior Product Designer based in New York.
-        For 6+ years at LinkedIn I led design for AI-powered products — most recently
-        as the most senior designer on the AI + Intelligence track for LinkedIn Learning.
-      </p>
-      <p>
-        In 2024 I founded <strong>Everydrop</strong>, a breastfeeding app live on the
-        App Store. I design it and build it — currently using Claude Code to iterate
-        directly in code.
-      </p>
-      <a href="about.html" class="about-link">More about me ↗</a>
+      <h2 class="about-title">Who is Dani?</h2>
+      <p>I'm a Senior Product Designer with 10+ years building consumer and enterprise products — most recently at LinkedIn, where I designed <strong style="color: var(--accent); font-weight: 500;">AI experiences at scale</strong> for LinkedIn Learning: from discovery and strategy to shipped features, design systems, and cross-functional execution.</p>
+      <p>I'm also the <strong style="color: var(--accent); font-weight: 500;">founder of Everydrop</strong>, a baby feeding app live on the App Store. Building it changed how I think about product — I write code, ship my own features, and use Claude Code to move fast. That founder lens shapes everything I design.</p>
+      <div class="about-icons">
+        <a class="btn-secondary" href="https://www.linkedin.com/in/danitremonte" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn-secondary" href="mailto:dani.tremonte@gmail.com">Email</a>
+      </div>
     </div>
   </section>
 
-  <!-- ── Footer ── -->
-  <footer>
-    <span class="footer-copy">© 2026 Dani Tremonte</span>
-    <div class="footer-links">
-      <a href="https://www.linkedin.com/in/danitremonte" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="mailto:dani.tremonte@gmail.com">Email</a>
-      <a href="#" target="_blank" rel="noopener">Resume ↗</a>
-    </div>
-  </footer>
+<div class="cursor-dot" id="cursorDot"></div>
+
+  <script>
+    const dot      = document.getElementById('cursorDot');
+    const heroName = document.querySelector('.hero h1');
+    let hitCanvas, hitCtx, isOnLetter = false;
+
+    function buildHitCanvas() {
+      const rect = heroName.getBoundingClientRect();
+      if (!rect.width) return; // bail if element hasn't laid out yet
+
+      hitCanvas = document.createElement('canvas');
+      hitCanvas.width  = Math.ceil(rect.width);
+      hitCanvas.height = Math.ceil(rect.height);
+      hitCtx = hitCanvas.getContext('2d');
+
+      const fontSize = parseFloat(window.getComputedStyle(heroName).fontSize);
+      hitCtx.clearRect(0, 0, hitCanvas.width, hitCanvas.height);
+      hitCtx.font         = `700 ${fontSize}px "Fraunces", serif`;
+      hitCtx.fillStyle    = '#000';
+      hitCtx.textAlign    = 'center';
+      hitCtx.textBaseline = 'middle';
+      hitCtx.fillText('Dani Tremonte', hitCanvas.width / 2, hitCanvas.height / 2);
+    }
+
+    function isOverLetter(cx, cy) {
+      if (!hitCanvas) return false;
+      // Always get a fresh rect so layout shifts don't cause misses
+      const rect = heroName.getBoundingClientRect();
+      const x = Math.round(cx - rect.left);
+      const y = Math.round(cy - rect.top);
+      if (x < 0 || y < 0 || x >= hitCanvas.width || y >= hitCanvas.height) return false;
+      return hitCtx.getImageData(x, y, 1, 1).data[3] > 30;
+    }
+
+    document.addEventListener('mousemove', (e) => {
+      dot.style.left = e.clientX + 'px';
+      dot.style.top  = e.clientY + 'px';
+
+      const over = isOverLetter(e.clientX, e.clientY);
+      if (over !== isOnLetter) {
+        isOnLetter = over;
+        dot.classList.toggle('on-name', over);
+      }
+    });
+
+    // Explicitly load Fraunces at the right weight before drawing —
+    // document.fonts.ready can resolve before the face is in canvas cache
+    const fontSize = parseFloat(window.getComputedStyle(heroName).fontSize);
+    document.fonts.load(`700 ${fontSize}px "Fraunces"`).then(() => {
+      buildHitCanvas();
+    });
+
+    // Rebuild if fonts weren't cached and arrived late, or on resize
+    window.addEventListener('load', buildHitCanvas);
+    window.addEventListener('resize', buildHitCanvas);
+  </script>
 
 </body>
 </html>
