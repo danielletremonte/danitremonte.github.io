@@ -104,6 +104,12 @@
       color: var(--text);
     }
 
+    .hero h1.name-lit {
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
     /* Hide default cursor site-wide */
     * { cursor: none !important; }
 
@@ -535,6 +541,20 @@
     // Rebuild if fonts weren't cached and arrived late, or on resize
     window.addEventListener('load', buildHitCanvas);
     window.addEventListener('resize', buildHitCanvas);
+
+    // Text lighting — terracotta radial gradient follows cursor through letters
+    heroName.addEventListener('mousemove', (e) => {
+      const rect = heroName.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width * 100).toFixed(1);
+      const y = ((e.clientY - rect.top)  / rect.height * 100).toFixed(1);
+      heroName.style.backgroundImage = `radial-gradient(circle at ${x}% ${y}%, #C4614A 0%, #1A1A1A 22%)`;
+      heroName.classList.add('name-lit');
+    });
+
+    heroName.addEventListener('mouseleave', () => {
+      heroName.classList.remove('name-lit');
+      heroName.style.backgroundImage = '';
+    });
   </script>
 
 </body>
