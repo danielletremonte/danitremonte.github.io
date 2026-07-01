@@ -362,7 +362,8 @@
       object-fit: cover;
       object-position: center top;
       border-radius: 60% 40% 55% 45% / 50% 60% 40% 55%;
-      box-shadow: 0 18px 60px rgba(244, 114, 182, 0.28);
+      /* Pink outline instead of a drop shadow: light pink (coder) / dark pink (designer) */
+      border: 2px solid var(--accent);
       animation:
         blobMorph 9s ease-in-out infinite alternate,
         blobFloat 6s ease-in-out infinite alternate;
@@ -393,7 +394,8 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      background: var(--fill);
+      /* Fill = the mode's own page background at 90% opacity (dark in coder, cream in designer) */
+      background: color-mix(in srgb, var(--bg) 90%, transparent);
       border: 1px solid var(--line);
       border-radius: 6px;
       padding: 10px 10px 10px 14px;
@@ -403,6 +405,9 @@
     .input-wrapper:focus-within {
       border-color: var(--line-strong);
     }
+
+    /* Designer mode: softer, more rounded input (8px more than coder's 6px) */
+    body.light .input-wrapper { border-radius: 14px; }
 
     /* Blinking cursor */
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
@@ -430,6 +435,8 @@
       line-height: var(--lh);
       caret-color: transparent;
     }
+    /* Placeholder hint = the same light grey as the prompt heading (web + mobile) */
+    .cmd-input::placeholder { color: var(--muted); opacity: 1; }
 
     /* Slash + theme buttons inside input */
     .slash-btn,
@@ -612,20 +619,11 @@
       object-fit: cover;
       object-position: center top;
       border-radius: 60% 40% 55% 45% / 50% 60% 40% 55%;
-      box-shadow: 0 24px 90px rgba(244, 114, 182, 0.28);
+      /* Pink outline instead of a drop shadow: light pink (coder) / dark pink (designer) */
+      border: 2px solid var(--accent);
       animation:
         blobMorph 9s ease-in-out infinite alternate,
         blobFloat 6s ease-in-out infinite alternate;
-      transition: translate 0.4s ease;
-    }
-
-    /* Wanders toward the cursor a little on hover */
-    .media-block.blob img:hover {
-      animation-duration: 4s, 3s;
-    }
-
-    body.light .media-block.blob img {
-      box-shadow: 0 24px 90px rgba(219, 39, 119, 0.22);
     }
 
     @keyframes blobMorph {
@@ -684,9 +682,10 @@
 
     /* ── Coder-mode terminal prompt list (chips are used in designer mode) ── */
     .menu { margin: 2px 0 6px; }
-    .menu-q { color: var(--muted); margin-bottom: 6px; }
+    /* Heading + options use --text: white in coder, black in designer */
+    .menu-q { color: var(--text); margin-bottom: 6px; }
     .menu-opt {
-      color: var(--muted);
+      color: var(--text);
       cursor: pointer;
       padding: 1px 0;
       transition: color 0.12s ease;
@@ -720,12 +719,27 @@
 
       .terminal { padding: 16px 20px 0; }
 
-      /* Input bar floats above the sheet so its buttons stay tappable */
+      /* Input bar floats over the feed; content scrolls behind it and fades out
+         (Claude Code style): transparent at the top → solid page color at the bottom */
       .input-area {
-        padding: 12px 16px 24px;
-        position: relative;
-        z-index: 271;          /* above the sheet backdrop (265) so palette taps land on items, not the dim layer */
-        background: var(--bg);
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 44px 16px 24px;   /* the 44px top offset = where the input pill begins */
+        z-index: 271;              /* above the sheet backdrop (265) so palette taps land on items, not the dim layer */
+        /* Feed stays fully crisp above the input; the page-color wash begins at the pill's top edge */
+        background: linear-gradient(to bottom, transparent 0, transparent 44px, var(--bg) 80px);
+        pointer-events: none;      /* the transparent fade zone lets taps/scroll reach the feed behind it */
+      }
+      .input-area > * { pointer-events: auto; }   /* but the input + palette stay interactive */
+
+      /* Give the feed room so its last line can scroll clear of the floating input.
+         display:block (not flex) so iOS Safari scrolls the feed reliably — a flex
+         column with overflow-y:auto often refuses to scroll on iOS. */
+      .output {
+        display: block;
+        padding-bottom: 92px;
       }
 
       .bio { width: calc(100% - 40px); }
@@ -998,9 +1012,17 @@
     const designer = document.body.classList.contains('light');
     themeBtn.innerHTML   = designer ? codeSVG : brushSVG;
     themeBtn.dataset.tip = designer ? 'Coder'  : 'Designer';
-    // Match the mobile status bar to the page background
-    const tc = document.querySelector('meta[name="theme-color"]');
-    if (tc) tc.setAttribute('content', designer ? '#FAF9F7' : '#0C0C0C');
+    setStatusBarColor(designer);
+  }
+
+  // Match the mobile status bar to the page background. iOS Safari won't repaint
+  // when an existing theme-color tag is edited in place, so replace it wholesale.
+  function setStatusBarColor(designer) {
+    document.querySelectorAll('meta[name="theme-color"]').forEach(m => m.remove());
+    const tc = document.createElement('meta');
+    tc.setAttribute('name', 'theme-color');
+    tc.setAttribute('content', designer ? '#FAF9F7' : '#0C0C0C');
+    document.head.appendChild(tc);
   }
 
   // Apply the mode change (no animation) — wrapped by the circular reveal below
@@ -1024,12 +1046,22 @@
 
   // optional force: 'coder' | 'designer' | undefined (toggle)
   function toggleTheme(force) {
+    // Set the status bar color OUTSIDE the view transition. iOS Safari reads
+    // theme-color from the transition's captured snapshot and ignores changes
+    // made inside the callback, so we apply it before the transition and again
+    // once it finishes (never only inside applyMode).
+    const willDesigner = force === 'designer' ? true
+                       : force === 'coder'    ? false
+                       : !document.body.classList.contains('light');
+    const reapplyStatusBar = () => setStatusBarColor(willDesigner);
+    reapplyStatusBar();
+
     if (!document.startViewTransition) { applyMode(force); return; }
 
     // Project / about pages: smooth crossfade dissolve (handles the
     // chips↔list reflow). No circle — that's main-page only.
     if (hasSplit) {
-      document.startViewTransition(() => applyMode(force));
+      document.startViewTransition(() => applyMode(force)).finished.finally(reapplyStatusBar);
       return;
     }
 
@@ -1045,7 +1077,7 @@
     document.documentElement.classList.add('vt-mode');
 
     const t = document.startViewTransition(() => applyMode(force));
-    t.finished.finally(() => document.documentElement.classList.remove('vt-mode'));
+    t.finished.finally(() => { document.documentElement.classList.remove('vt-mode'); reapplyStatusBar(); });
   }
 
   themeBtn.addEventListener('click', () => toggleTheme());
@@ -1132,6 +1164,7 @@
 
       if (m.type === 'video') {
         const vid = document.createElement('video');
+        vid.poster = m.src.replace(/\.mp4$/, '-poster.jpg');  // first-frame fallback
         vid.src = m.srcDesktop || m.src;  // desktop panel uses the HD source
         vid.muted = true;
         vid.playsInline = true;
@@ -1170,18 +1203,6 @@
     aboutPanel.appendChild(block);
   });
   previewSide.appendChild(aboutPanel);
-
-  // Blob drifts gently toward the cursor inside the about panel
-  const blobImg = aboutPanel.querySelector('img');
-  aboutPanel.addEventListener('mousemove', e => {
-    const r  = aboutPanel.getBoundingClientRect();
-    const dx = e.clientX - (r.left + r.width  / 2);
-    const dy = e.clientY - (r.top  + r.height / 2);
-    blobImg.style.translate = `${(dx * 0.05).toFixed(1)}px ${(dy * 0.05).toFixed(1)}px`;
-  });
-  aboutPanel.addEventListener('mouseleave', () => {
-    blobImg.style.translate = '0px 0px';
-  });
 
   const previewItems = document.querySelectorAll('.preview-item');
   const ABOUT_IDX    = projects.length; // about panel sits after the projects
@@ -1372,12 +1393,19 @@
     scheduleReveal(d);
   }
 
-  // Mobile inline videos: play only while ≥1/3 in the viewport, pause otherwise
+  // Mobile inline videos: play while ≥1/3 in the viewport, pause otherwise.
+  // We track in-view state so a clip that isn't buffered yet can start the
+  // moment it's ready (see the 'canplay' retry in inlineProjectMedia).
   const inlineVideoObserver = new IntersectionObserver(entries => {
     entries.forEach(e => {
       const v = e.target;
-      if (e.isIntersecting && e.intersectionRatio >= 0.34) v.play().catch(() => {});
-      else v.pause();
+      if (e.isIntersecting && e.intersectionRatio >= 0.34) {
+        v.dataset.inview = '1';
+        v.play().catch(() => {});
+      } else {
+        v.dataset.inview = '0';
+        v.pause();
+      }
     });
   }, { threshold: [0, 0.34, 0.7, 1] });
 
@@ -1386,15 +1414,25 @@
       let node;
       if (m.type === 'video') {
         node = document.createElement('video');
+        // Poster (first frame) guarantees the clip always shows something even
+        // when iOS won't play an off-screen video — no more blank/disappearing.
+        node.poster = m.src.replace(/\.mp4$/, '-poster.jpg');
+        node.muted = true;
+        node.defaultMuted = true;
         node.setAttribute('muted', '');
         node.setAttribute('playsinline', '');
         node.setAttribute('webkit-playsinline', '');
         node.setAttribute('loop', '');
-        node.setAttribute('preload', 'metadata');
-        node.muted = true;
+        node.setAttribute('preload', 'auto');   // buffer eagerly so it can play on entry
+        node.dataset.inview = '0';
         node.src = m.src;
         if (m.rate) { node.playbackRate = m.rate; node.addEventListener('play', () => node.playbackRate = m.rate); }
-        inlineVideoObserver.observe(node);  // play/pause on scroll into view
+        // If the clip is in view but wasn't buffered when first asked to play,
+        // start it as soon as it has enough data.
+        node.addEventListener('canplay', () => { if (node.dataset.inview === '1') node.play().catch(() => {}); });
+        node.load();  // kick off buffering immediately on page entry
+        // Animate clips as they scroll into view (they still show their poster otherwise)
+        inlineVideoObserver.observe(node);
       } else {
         node = document.createElement('img');
         node.src = m.src;
