@@ -477,7 +477,7 @@
       background: var(--panel);
       color: var(--text);
       border: 1px solid var(--line);
-      padding: 9px 18px;
+      padding: 9px 14px;
       border-radius: 100px;
       font-size: 12px;
       font-family: var(--font);
@@ -486,7 +486,7 @@
       pointer-events: none;
       transform: translateX(-50%) translateY(3px);
       transition: opacity 0.15s ease, transform 0.15s ease;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
       z-index: 300;
     }
 
@@ -1011,7 +1011,7 @@
     // Icon + label show what you'll switch TO
     const designer = document.body.classList.contains('light');
     themeBtn.innerHTML   = designer ? codeSVG : brushSVG;
-    themeBtn.dataset.tip = designer ? 'Coder'  : 'Designer';
+    themeBtn.dataset.tip = designer ? 'Terminal' : 'Canvas';
     setStatusBarColor(designer);
   }
 
@@ -1065,12 +1065,14 @@
       return;
     }
 
-    // Main page: circular reveal from the accent dot after the name
+    // Main page: circular reveal from the accent dot after the name.
+    // The dot is a period glyph sitting on the baseline, so its visible position
+    // is near the BOTTOM of the (tall) line box — not its vertical center.
     const el = document.querySelector('.bio-accent') || document.querySelector('.bio-name');
     let cx = window.innerWidth / 2, cy = window.innerHeight / 2;
     if (el) {
       const r = el.getBoundingClientRect();
-      if (r.width) { cx = r.left + r.width / 2; cy = r.top + r.height / 2; }
+      if (r.width) { cx = r.left + r.width / 2; cy = r.top + r.height * 0.78; }
     }
     document.documentElement.style.setProperty('--vt-x', cx + 'px');
     document.documentElement.style.setProperty('--vt-y', cy + 'px');
@@ -1234,8 +1236,8 @@
   function resolveItem(item) {
     if (item.dynamic === 'mode') {
       const designer = document.body.classList.contains('light');
-      return { label: designer ? 'coder mode' : 'designer mode',
-               cmd:   designer ? 'coder'      : 'designer' };
+      return { label: designer ? 'terminal mode' : 'canvas mode',
+               cmd:   designer ? 'terminal'      : 'canvas' };
     }
     return item;
   }
@@ -1755,15 +1757,18 @@
       if (i < menuItems.length) { pickMenu(i); return; }
     }
 
-    // Mode switch — handle before anything else (so "designer" isn't read as about)
-    if (lower === 'designer' || lower === 'coder' || lower === 'theme' || lower === 'dark mode') {
-      const force = lower === 'designer' ? 'designer' : lower === 'coder' ? 'coder' : undefined;
+    // Mode switch — handle before anything else (so "canvas" isn't read as about).
+    // Canvas = light/design mode, Terminal = dark/dev mode. Old words kept as aliases.
+    if (['canvas', 'terminal', 'designer', 'coder', 'theme', 'dark mode'].includes(lower)) {
+      const force = (lower === 'canvas' || lower === 'designer') ? 'designer'
+                  : (lower === 'terminal' || lower === 'coder')  ? 'coder'
+                  : undefined;
       const onProject = currentTopic && currentTopic[0] === 'p';
       toggleTheme(force);
       // Stay quiet while a project is open (don't interrupt the case study)
       if (hasSplit && !onProject) {
         line(`<span class="sym">$</span> ${esc(lower)}`, 'is-cmd');
-        line(`switched to ${document.body.classList.contains('light') ? 'designer' : 'coder'} mode`, 'is-resp');
+        line(`switched to ${document.body.classList.contains('light') ? 'canvas' : 'terminal'} mode`, 'is-resp');
         blank();
       }
       return;

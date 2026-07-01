@@ -1011,7 +1011,7 @@
     // Icon + label show what you'll switch TO
     const designer = document.body.classList.contains('light');
     themeBtn.innerHTML   = designer ? codeSVG : brushSVG;
-    themeBtn.dataset.tip = designer ? 'Coder'  : 'Designer';
+    themeBtn.dataset.tip = designer ? 'Terminal' : 'Canvas';
     setStatusBarColor(designer);
   }
 
@@ -1234,8 +1234,8 @@
   function resolveItem(item) {
     if (item.dynamic === 'mode') {
       const designer = document.body.classList.contains('light');
-      return { label: designer ? 'coder mode' : 'designer mode',
-               cmd:   designer ? 'coder'      : 'designer' };
+      return { label: designer ? 'terminal mode' : 'canvas mode',
+               cmd:   designer ? 'terminal'      : 'canvas' };
     }
     return item;
   }
@@ -1755,15 +1755,18 @@
       if (i < menuItems.length) { pickMenu(i); return; }
     }
 
-    // Mode switch — handle before anything else (so "designer" isn't read as about)
-    if (lower === 'designer' || lower === 'coder' || lower === 'theme' || lower === 'dark mode') {
-      const force = lower === 'designer' ? 'designer' : lower === 'coder' ? 'coder' : undefined;
+    // Mode switch — handle before anything else (so "canvas" isn't read as about).
+    // Canvas = light/design mode, Terminal = dark/dev mode. Old words kept as aliases.
+    if (['canvas', 'terminal', 'designer', 'coder', 'theme', 'dark mode'].includes(lower)) {
+      const force = (lower === 'canvas' || lower === 'designer') ? 'designer'
+                  : (lower === 'terminal' || lower === 'coder')  ? 'coder'
+                  : undefined;
       const onProject = currentTopic && currentTopic[0] === 'p';
       toggleTheme(force);
       // Stay quiet while a project is open (don't interrupt the case study)
       if (hasSplit && !onProject) {
         line(`<span class="sym">$</span> ${esc(lower)}`, 'is-cmd');
-        line(`switched to ${document.body.classList.contains('light') ? 'designer' : 'coder'} mode`, 'is-resp');
+        line(`switched to ${document.body.classList.contains('light') ? 'canvas' : 'terminal'} mode`, 'is-resp');
         blank();
       }
       return;
