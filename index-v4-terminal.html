@@ -862,9 +862,8 @@
           <div class="input-wrapper" id="inputWrapper">
             <span class="cursor-blink" id="cursorBlink"></span>
             <input class="cmd-input" id="cmd" type="text"
-              placeholder="press / to explore the work"
+              placeholder="press / to explore"
               autocomplete="off" spellcheck="false" autofocus>
-            <button class="theme-btn" id="themeBtn"></button>
             <button class="slash-btn" id="slashBtn" data-tip="Commands">/</button>
           </div>
         </div>
@@ -1010,10 +1009,13 @@
   const brushSVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m9.06 11.9 8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.08"/><path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1.08 1.1 2.49 2.02 4 2.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 0 0-3-3.02z"/></svg>`;
 
   function updateThemeUI() {
-    // Icon + label show what you'll switch TO
     const designer = document.body.classList.contains('light');
-    themeBtn.innerHTML   = designer ? codeSVG : brushSVG;
-    themeBtn.dataset.tip = designer ? 'Terminal' : 'Canvas';
+    // The in-input mode toggle button was removed; mode switches via the / palette
+    // or a typed command. Keep the guard in case the button is ever restored.
+    if (themeBtn) {
+      themeBtn.innerHTML   = designer ? codeSVG : brushSVG;
+      themeBtn.dataset.tip = designer ? 'Dark' : 'Light';
+    }
     setStatusBarColor(designer);
   }
 
@@ -1084,8 +1086,8 @@
     t.finished.finally(() => { document.documentElement.classList.remove('vt-mode'); reapplyStatusBar(); });
   }
 
-  themeBtn.addEventListener('click', () => toggleTheme());
-  updateThemeUI(); // default: coder mode, paintbrush icon (switch to designer)
+  if (themeBtn) themeBtn.addEventListener('click', () => toggleTheme());
+  updateThemeUI(); // default: dark mode
 
   const cmdHistory = [];
   let histIdx = -1;
@@ -1226,11 +1228,11 @@
       // AI Library temporarily hidden
     ]},
     { section: 'Info', items: [
+      { label:'intro', cmd:'intro' },   // back to the landing page (was 'clear')
       { label:'about', cmd:'about' },
     ]},
-    { section: 'Terminal', items: [
+    { section: '', items: [
       { dynamic:'mode' },
-      { label:'clear', cmd:'clear' },
     ]},
   ];
 
@@ -1238,8 +1240,8 @@
   function resolveItem(item) {
     if (item.dynamic === 'mode') {
       const designer = document.body.classList.contains('light');
-      return { label: designer ? 'terminal mode' : 'canvas mode',
-               cmd:   designer ? 'terminal'      : 'canvas' };
+      return { label: designer ? 'dark mode' : 'light mode',
+               cmd:   designer ? 'dark'      : 'light' };
     }
     return item;
   }
@@ -1266,10 +1268,12 @@
       const matches = group.items.map(resolveItem).filter(i => i.label.toLowerCase().includes(query));
       if (!matches.length) return;
 
-      const sec = document.createElement('div');
-      sec.className   = 'palette-section';
-      sec.textContent = group.section;
-      paletteBody.appendChild(sec);
+      if (group.section) {   // groups with no title render their items header-less
+        const sec = document.createElement('div');
+        sec.className   = 'palette-section';
+        sec.textContent = group.section;
+        paletteBody.appendChild(sec);
+      }
 
       matches.forEach(item => {
         const row = document.createElement('div');
@@ -1606,8 +1610,9 @@
 
   // Pick prompt UI by mode: terminal list (coder) vs chips (designer)
   function showPrompts(pi) {
-    if (document.body.classList.contains('light')) resetChips();
-    else startMenu(pi);
+    // Both modes now use the pill/chip prompts (the numbered terminal menu was
+    // retired per design feedback). resetChips handles desktop + mobile.
+    resetChips();
   }
 
   // Project command names, in project order ('mcp' kept as a short alias)
@@ -1759,18 +1764,18 @@
       if (i < menuItems.length) { pickMenu(i); return; }
     }
 
-    // Mode switch — handle before anything else (so "canvas" isn't read as about).
-    // Canvas = light/design mode, Terminal = dark/dev mode. Old words kept as aliases.
-    if (['canvas', 'terminal', 'designer', 'coder', 'theme', 'dark mode'].includes(lower)) {
-      const force = (lower === 'canvas' || lower === 'designer') ? 'designer'
-                  : (lower === 'terminal' || lower === 'coder')  ? 'coder'
+    // Mode switch — handle before anything else (so mode words aren't read as about).
+    // Light = light/design mode, Dark = dark/dev mode. Old words kept as aliases.
+    if (['light', 'dark', 'light mode', 'dark mode', 'canvas', 'terminal', 'designer', 'coder', 'theme'].includes(lower)) {
+      const force = (lower === 'light' || lower === 'light mode' || lower === 'canvas' || lower === 'designer') ? 'designer'
+                  : (lower === 'dark'  || lower === 'dark mode'  || lower === 'terminal' || lower === 'coder')  ? 'coder'
                   : undefined;
       const onProject = currentTopic && currentTopic[0] === 'p';
       toggleTheme(force);
       // Stay quiet while a project is open (don't interrupt the case study)
       if (hasSplit && !onProject) {
         line(`<span class="sym">$</span> ${esc(lower)}`, 'is-cmd');
-        line(`switched to ${document.body.classList.contains('light') ? 'canvas' : 'terminal'} mode`, 'is-resp');
+        line(`switched to ${document.body.classList.contains('light') ? 'light' : 'dark'} mode`, 'is-resp');
         blank();
       }
       return;
@@ -1826,8 +1831,8 @@
     } else if (isAbout) {
       showAbout(justSplit);
 
-    } else if (lower === 'clear') {
-      // Staged exit: right panel fades → left panel fades → main page slides in
+    } else if (lower === 'intro' || lower === 'clear') {
+      // Back to the landing page. Staged exit: right panel fades → left panel fades → main page slides in
       hasSplit = false;
       currentProject = -1;
       currentTopic = null;
