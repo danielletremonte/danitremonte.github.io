@@ -1101,8 +1101,8 @@
 
   const projects = [
     { id:1, name:'ChatGPT & LinkedIn Learning MCP',
-      tags:'AI product design  ·  Prototyping  ·  Ambiguity & complexity',
-      desc:['Brought LinkedIn Learning inside the AI assistants people','already work in, like ChatGPT and Copilot, through an open-standard','(MCP) integration, so learning meets you in the flow of work.'],
+      tags:'AI product design  ·  0→1 product  ·  Ambiguity & complexity',
+      desc:['Brought LinkedIn Learning inside AI platforms like ChatGPT and','Copilot through an open-standard (MCP) integration. The goal was to','meet users where they were and give them access to their learning tools.'],
       media:[
         { type:'video', src:'assets/project-mcp-web.mp4', label:'MCP in ChatGPT, live demo' }
         // Hidden 2026-08-04 (per Dani): the two stills below the demo
@@ -1110,11 +1110,11 @@
         // { type:'image', src:'assets/MCP-video-full-screen.jpg', label:'Full-screen video mode' }
       ],
       qa:{
-        challenge: 'Designing for constantly changing services and patterns owned by ChatGPT and Copilot. The standard was still evolving and every host rendered things differently, each with its own rules to design within. The hard part was aligning on requirements and understanding the technical limitations while the AI tools kept evolving. I led many conversations across engineering and product to get to alignment.',
-        role:      'Lead designer, solo. I owned the experience end to end: problem definition, flows, prototypes, and the patterns others could build on. I worked across engineering, product, and the host platforms (ChatGPT, Copilot) we designed within.',
-        process:   'I prototyped in code, with AI, to test the experience inside the real assistants instead of static mocks. It was the fastest way to learn how each host would actually render it. AI was both the subject I designed for and the tool I designed with.',
-        decisions: 'The design came down to two moves. First, return a few highly personalized videos, matched to the person\'s role, goals, and skills, instead of a long list, so the result feels relevant rather than like another search page. Second, let people expand a video into a full page right there, to engage with it properly, navigate the rest of the course, and stay in the flow. Together they solve what makes LinkedIn Learning easy to skip: it lives on a separate platform and doesn\'t tailor content to the individual.',
-        learnings: 'Designing for an emerging standard taught me to hold designs loosely: ship a pattern, watch how each host renders it, iterate. And the doorway matters as much as the room: the best content still fails if it makes people leave their work to reach it.'
+        problem:     'Companies give employees access to LinkedIn Learning through their plans. But employees increasingly work inside AI platforms instead of visiting a separate learning site, and they want learning personalized to them. So how might LinkedIn Learning surface personalized content directly inside those AI platforms?',
+        challenge:   'Designing for shifting patterns owned by ChatGPT and Copilot. Each partner rendered things differently, with its own design rules, and no shared patterns or component library existed yet. I had to learn each platform\'s conventions to make the video experience feel native and delightful inside them. On top of that, the technical limits kept moving as the AI tools evolved, so I led many conversations across engineering and product to align on requirements.',
+        constraints: 'Early on I explored more futuristic concepts, like voice-based AI learning inside Copilot in PowerPoint, or practice exercises in ChatGPT. But as we aligned with the partners, it became clear their products couldn\'t support those integrations yet, so we scoped down to our core video experience for the MVP. I mapped out a strategy that sequenced beta, V2, and future designs we could ship as we launched and validated.',
+        solving:     'I mapped the core patterns of ChatGPT and Copilot and built a component library for Learning that worked across every AI agent. That gave us a consistent, reliable experience inside the agents, from the MVP through future versions with more complex patterns. To make it personal and engaging, I focused the experience on a few highly personalized videos, and let users expand a video into a full page inside ChatGPT and Copilot, so they could stay in the platform and navigate the whole course.',
+        roleai:      'Lead designer, solo. I owned the experience end to end: problem definition, flows, prototypes, and the patterns others could build on. I worked across engineering, product, and the partner platforms we designed within (ChatGPT, Copilot). I prototyped in HTML with AI to validate interactions, transitions, and navigation. It was a fast way to move and to share with the broader product team for alignment.'
       } },
     { id:2, name:'Everydrop at the App Store',
       tags:'Founder  ·  0→1 product  ·  iOS  ·  Live',
@@ -1487,12 +1487,16 @@
   // ── Suggested prompt chips (questions recruiters actually ask) ──
   // Shows 3 at a time; clicking one streams in the next from the pool.
   const promptDefs = [
-    { key:'challenge', label:'Biggest challenge'     },
-    { key:'impact',    label:'Impact & outcomes'     },
-    { key:'role',      label:"What was Dani's role?" },
-    { key:'process',   label:'How was AI used?'      },
-    { key:'decisions', label:'Key design decisions'  },
-    { key:'learnings', label:'What she learned'      }
+    { key:'problem',     label:'Problem statement'        },
+    { key:'challenge',   label:'Biggest challenge'        },
+    { key:'impact',      label:'Impact & outcomes'        },
+    { key:'constraints', label:'Other constraints'        },
+    { key:'solving',     label:'Solving challenges'       },
+    { key:'roleai',      label:"Dani's role and using AI" },
+    { key:'role',        label:"What was Dani's role?"    },
+    { key:'process',     label:'How was AI used?'         },
+    { key:'decisions',   label:'Key design decisions'     },
+    { key:'learnings',   label:'What she learned'         }
   ];
 
   let promptQueue = [];
