@@ -1691,7 +1691,8 @@
     line(p.name, 'is-bright');
     line(p.tags, 'is-tags');
     blank();
-    line(esc(p.desc.join(' ')) + ' This is a quick overview, not a full case study.', 'is-resp');
+    line(esc(p.desc.join(' ')), 'is-resp');
+    line('📣 This is a quick overview, not a full case study.', 'is-resp');
     blank();
     if (isMobile()) {
       inlineProjectMedia(pi);  // media flows into the output like a feed
