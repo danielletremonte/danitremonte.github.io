@@ -259,6 +259,10 @@
     .bio-link.link-everydrop:hover { color: #AA8BFC; text-decoration-color: #AA8BFC; }
     body.light .bio-link.link-everydrop:hover { color: #7C3AED; text-decoration-color: #7C3AED; }
 
+    /* Inline CTA link (e.g. "Let's talk over email"): underline only on hover */
+    .cta-link { color: var(--muted); text-decoration: none; text-underline-offset: 3px; transition: color 0.2s ease; }
+    .cta-link:hover { text-decoration: underline; text-decoration-thickness: 1px; }
+
     /* ── Terminal output ── */
     .terminal {
       flex: 1;
@@ -1098,35 +1102,35 @@
   const projects = [
     { id:1, name:'ChatGPT & LinkedIn Learning MCP',
       tags:'AI product design  ·  Prototyping  ·  Ambiguity & complexity',
-      desc:['Led AI + Intelligence design initiatives at LinkedIn Learning,','including integrating MCP to ChatGPT, Copilot, learning agents','and AI-native patterns across platforms used by millions.'],
+      desc:['Brought LinkedIn Learning inside the AI assistants people','already work in, like ChatGPT and Copilot, through an open-standard','(MCP) integration, so learning meets you in the flow of work.'],
       media:[
-        { type:'video', src:'assets/project-mcp-web.mp4', label:'MCP in ChatGPT, live demo' },
-        { type:'image', src:'assets/MCP-video-in-chat.jpg',     label:'Video player inside the chat' },
-        { type:'image', src:'assets/MCP-video-full-screen.jpg', label:'Full-screen video mode' }
+        { type:'video', src:'assets/project-mcp-web.mp4', label:'MCP in ChatGPT, live demo' }
+        // Hidden 2026-08-04 (per Dani): the two stills below the demo
+        // { type:'image', src:'assets/MCP-video-in-chat.jpg',     label:'Video player inside the chat' },
+        // { type:'image', src:'assets/MCP-video-full-screen.jpg', label:'Full-screen video mode' }
       ],
       qa:{
-        summary:   'An MCP integration that brings LinkedIn Learning directly into ChatGPT and Copilot. Learners ask a question, get the right course video inside the chat, and keep learning without switching context.',
-        challenge: 'Designing for platforms that didn\'t exist yet. The MCP spec was still evolving, every host rendered components differently, and the work spanned three companies (LinkedIn, OpenAI, and Microsoft), each with their own constraints. Prototyping in code let us test patterns before any guidelines existed.',
-        impact:    'AI-native learning patterns shipped across ChatGPT and Copilot, putting LinkedIn Learning in front of millions of users inside the tools they already use, and positioned the product for the emerging agent ecosystem.',
-        role:      'Led design for the AI + Intelligence track at LinkedIn Learning. Owned the MCP experience end to end: discovery, flows, prototypes, and the patterns other designers built on. Partnered daily with engineering, PM, and counterparts at OpenAI and Microsoft.',
-        process:   'Prototypes were built in code with AI assistance to test interactions inside the real hosts instead of static mocks. It was the fastest way to learn how ChatGPT and Copilot would actually render the experience. AI was both the subject and the tool.',
-        decisions: 'Chose to prototype in code rather than Figma. It was the only way to feel how MCP components actually rendered inside ChatGPT and Copilot. Kept learners in flow by surfacing the right course video inside the chat instead of sending them to a separate destination.',
-        learnings: 'Designing for an emerging protocol taught me to hold designs loosely: ship a pattern, watch how each host renders it, iterate. Ambiguity isn\'t a blocker here; it\'s the job.'
+        challenge: 'Designing for constantly changing services and patterns owned by ChatGPT and Copilot. The standard was still evolving and every host rendered things differently, each with its own rules to design within. The hard part was aligning on requirements and understanding the technical limitations while the AI tools kept evolving. I led many conversations across engineering and product to get to alignment.',
+        role:      'Lead designer, solo. I owned the experience end to end: problem definition, flows, prototypes, and the patterns others could build on. I worked across engineering, product, and the host platforms (ChatGPT, Copilot) we designed within.',
+        process:   'I prototyped in code, with AI, to test the experience inside the real assistants instead of static mocks. It was the fastest way to learn how each host would actually render it. AI was both the subject I designed for and the tool I designed with.',
+        decisions: 'The design came down to two moves. First, return a few highly personalized videos, matched to the person\'s role, goals, and skills, instead of a long list, so the result feels relevant rather than like another search page. Second, let people expand a video into a full page right there, to engage with it properly, navigate the rest of the course, and stay in the flow. Together they solve what makes LinkedIn Learning easy to skip: it lives on a separate platform and doesn\'t tailor content to the individual.',
+        learnings: 'Designing for an emerging standard taught me to hold designs loosely: ship a pattern, watch how each host renders it, iterate. And the doorway matters as much as the room: the best content still fails if it makes people leave their work to reach it.'
       } },
     { id:2, name:'Everydrop at the App Store',
       tags:'Founder  ·  0→1 product  ·  iOS  ·  Live',
       desc:['Founded Everydrop in 2024. A company, not a side project:','a breastfeeding app live on the App Store with real users,','production infrastructure, and content validated by lactation','consultants. Designed it, shipped it, now builds it end-to-end.'],
       media:[
         { type:'video', src:'assets/everydrop-demo-web.mp4', eager:true,  label:'Everydrop demo' },
-        { type:'image', src:'assets/everydrop-app-phone.jpg',             label:'Everydrop on iPhone' },
-        { type:'video', src:'assets/everydrop-logo-animation.mp4',        label:'Logo animation' },
-        { type:'video', src:'assets/everydrop-dark-light-mode-animation.mp4', rate:0.6, label:'Dark and light mode' },
-        // { type:'image', src:'assets/everydrop-illustrations-small.jpg',   label:'Illustrations' },  // hidden 2026-07-02
-        { type:'video', src:'assets/everydrop-carousel.mp4',              label:'Onboarding carousel' },
+        // Hidden 2026-08-04 (per Dani): phone cover image + logo animation
+        // { type:'image', src:'assets/everydrop-app-phone.jpg',             label:'Everydrop on iPhone' },
+        // { type:'video', src:'assets/everydrop-logo-animation.mp4',        label:'Logo animation' },
+        { type:'video', src:'assets/everydrop-tracker-flow.mp4',          label:'Tracker flow' },
+        { type:'video', src:'assets/everydrop-timer-animation.mp4',       label:'Timer animation' },
         { type:'video', src:'assets/everydrop-tracker-flow-activity.mp4?v=2', label:'Activity tracker flow' },
         { type:'video', src:'assets/everydrop-activity-animation.mp4',    label:'Activity animation' },
-        { type:'video', src:'assets/everydrop-tracker-flow.mp4',          label:'Tracker flow' },
-        { type:'video', src:'assets/everydrop-timer-animation.mp4',       label:'Timer animation' }
+        { type:'video', src:'assets/everydrop-carousel.mp4',              label:'Onboarding carousel' },
+        // { type:'image', src:'assets/everydrop-illustrations-small.jpg',   label:'Illustrations' },  // hidden 2026-07-02
+        { type:'video', src:'assets/everydrop-dark-light-mode-animation.mp4', rate:0.6, label:'Dark and light mode' }
       ],
       qa:{
         summary:   'Everydrop is a company with a live product, not a vibe-coded demo: a breastfeeding app on the iOS App Store since 2024, running real production infrastructure (React Native + Expo, Supabase backend, authentication, App Store operations), with personalized feeding guidance and content validated by professional lactation consultants.',
@@ -1483,7 +1487,6 @@
   // ── Suggested prompt chips (questions recruiters actually ask) ──
   // Shows 3 at a time; clicking one streams in the next from the pool.
   const promptDefs = [
-    { key:'summary',   label:'Project summary'      },
     { key:'challenge', label:'Biggest challenge'     },
     { key:'impact',    label:'Impact & outcomes'     },
     { key:'role',      label:"What was Dani's role?" },
@@ -1497,11 +1500,31 @@
 
   function buildChip(pd) {
     const chip = document.createElement('button');
-    chip.className   = 'chip chip-p' + currentProject + (pd.nav ? ' chip-nav' : '');
+    chip.className   = 'chip chip-p' + currentProject + ((pd.nav || pd.cta) ? ' chip-nav' : '');
     chip.textContent = pd.label;
     chip.addEventListener('click', () => {
       if (pd.nav) { const c = otherVisibleProjectCmd(); if (c) run(c); return; }
       if (currentProject < 0) return;
+      // CTA chip: not a qa answer — a note that this is an overview + a way to reach out
+      if (pd.cta) {
+        const cc = cmdColorClass(currentProject);
+        line(`<span class="sym ${cc}">$</span> <span class="${cc}">full case study</span>`, 'is-cmd');
+        line('This is the short version. The full case study, with the process, the messy middle, and the results in depth, is something I walk through live. <a class="cta-link" href="mailto:dani.tremonte@gmail.com">Let\'s talk over email</a>.', 'is-resp');
+        blank();
+        // CTA used → replace it with the next queued prompt so the button count holds
+        const ctaNext = promptQueue.shift();
+        if (ctaNext) {
+          chip.replaceWith(buildChip(ctaNext));
+        } else {
+          chip.remove();
+          if (!chipHost.querySelector('.chip')) {
+            chipHost.appendChild(buildChip({ nav: true, label: 'Show another project' }));
+          }
+        }
+        if (chipHost.parentNode === output) output.appendChild(chipHost);
+        if (!isMobile()) cmdEl.focus();
+        return;
+      }
       const cc = cmdColorClass(currentProject);
       line(`<span class="sym ${cc}">$</span> <span class="${cc}">${esc(pd.label.toLowerCase())}</span>`, 'is-cmd');
       line(esc(projects[currentProject].qa[pd.key]), 'is-resp');
@@ -1524,7 +1547,9 @@
   }
 
   function resetChips() {
-    promptQueue = promptDefs.slice(3);
+    // Only show prompts this project has an answer for (e.g. MCP has no "impact")
+    const defs = projects[currentProject] ? promptDefs.filter(pd => projects[currentProject].qa[pd.key]) : promptDefs;
+    promptQueue = defs.slice(2);
     if (isMobile()) {
       // Mobile: chips flow in the output, after the media
       chipHost = document.createElement('div');
@@ -1535,7 +1560,10 @@
       promptChips.innerHTML = '';
       promptChips.classList.add('visible');
     }
-    promptDefs.slice(0, 3).forEach(pd => chipHost.appendChild(buildChip(pd)));
+    // Show only 2 prompts at start so that, with the persistent CTA, exactly 3 chips appear
+    defs.slice(0, 2).forEach(pd => chipHost.appendChild(buildChip(pd)));
+    // Persistent CTA chip: recruiters can always jump to the "full case study" (routes to contact)
+    chipHost.appendChild(buildChip({ cta: true, label: 'Full case study' }));
   }
 
   // ── Coder-mode terminal prompt list (numbered, keyboard-navigable) ──
@@ -1659,7 +1687,7 @@
     line(p.name, 'is-bright');
     line(p.tags, 'is-tags');
     blank();
-    line(esc(p.desc.join(' ')), 'is-resp');
+    line(esc(p.desc.join(' ')) + ' This is a quick overview, not a full case study.', 'is-resp');
     blank();
     if (isMobile()) {
       inlineProjectMedia(pi);  // media flows into the output like a feed
