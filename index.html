@@ -1106,7 +1106,8 @@
       desc:['Brought LinkedIn Learning inside AI platforms like ChatGPT and','Copilot through an open-standard (MCP) integration. The goal was to','meet users where they were and give them access to their learning tools.'],
       media:[
         { type:'video', src:'assets/project-mcp-web.mp4', label:'MCP in ChatGPT, live demo' },
-        { type:'video', src:'assets/LiL-MCP-ChatGPT.mp4', label:'LinkedIn Learning inside ChatGPT' }
+        { type:'video', src:'assets/LiL-MCP-ChatGPT.mp4', playAt:0.66, label:'LinkedIn Learning inside ChatGPT' },
+        { type:'video', src:'assets/LiL-MCP-Copilot.mp4', playAt:0.66, label:'LinkedIn Learning inside Copilot' }
         // Hidden 2026-08-04 (per Dani): the two stills below the demo
         // { type:'image', src:'assets/MCP-video-in-chat.jpg',     label:'Video player inside the chat' },
         // { type:'image', src:'assets/MCP-video-full-screen.jpg', label:'Full-screen video mode' }
@@ -1182,6 +1183,7 @@
         vid.playsInline = true;
         vid.preload = m.eager ? 'auto' : 'metadata';  // eager media buffers immediately
         vid.loop = true;
+        if (m.playAt != null) vid.dataset.playat = m.playAt;  // per-video visibility threshold (default 0.34)
         if (m.rate) { vid.playbackRate = m.rate; vid.addEventListener('play', () => vid.playbackRate = m.rate); }
         block.appendChild(vid);
       } else {
@@ -1413,7 +1415,7 @@
   const inlineVideoObserver = new IntersectionObserver(entries => {
     entries.forEach(e => {
       const v = e.target;
-      if (e.isIntersecting && e.intersectionRatio >= 0.34) {
+      if (e.isIntersecting && e.intersectionRatio >= (parseFloat(v.dataset.playat) || 0.34)) {
         v.dataset.inview = '1';
         v.play().catch(() => {});
       } else {
@@ -1421,7 +1423,7 @@
         v.pause();
       }
     });
-  }, { threshold: [0, 0.34, 0.7, 1] });
+  }, { threshold: [0, 0.34, 0.66, 0.7, 1] });
 
   function inlineProjectMedia(pi) {
     projects[pi].media.forEach(m => {
@@ -1439,6 +1441,7 @@
         node.setAttribute('loop', '');
         node.setAttribute('preload', 'auto');   // buffer eagerly so it can play on entry
         node.dataset.inview = '0';
+        if (m.playAt != null) node.dataset.playat = m.playAt;  // per-video visibility threshold (default 0.34)
         node.src = m.src;
         if (m.rate) { node.playbackRate = m.rate; node.addEventListener('play', () => node.playbackRate = m.rate); }
         // If the clip is in view but wasn't buffered when first asked to play,
@@ -1465,7 +1468,8 @@
       const r = vid.getBoundingClientRect();
       const visible = Math.max(0, Math.min(r.bottom, pr.bottom) - Math.max(r.top, pr.top));
       const ratio = r.height ? visible / r.height : 0;
-      if (ratio >= 0.34) { if (vid.paused) vid.play().catch(() => {}); }
+      const playAt = parseFloat(vid.dataset.playat) || 0.34;  // per-video threshold (default 1/3)
+      if (ratio >= playAt) { if (vid.paused) vid.play().catch(() => {}); }
       else if (!vid.paused) vid.pause();
     });
   }
