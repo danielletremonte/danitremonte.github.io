@@ -1106,7 +1106,7 @@
       desc:['Brought LinkedIn Learning inside AI platforms like ChatGPT and','Copilot through an open-standard (MCP) integration. The goal was to','meet users where they were and give them access to their learning tools.'],
       media:[
         { type:'video', src:'assets/project-mcp-web.mp4', label:'MCP in ChatGPT, live demo' },
-        { type:'video', src:'assets/LiL-MCP-ChatGPT.mp4', playAt:0.66, label:'LinkedIn Learning inside ChatGPT' },
+        { type:'video', src:'assets/LiL-MCP-ChatGPT.mp4?v=2', playAt:0.66, label:'LinkedIn Learning inside ChatGPT' },
         { type:'video', src:'assets/LiL-MCP-Copilot.mp4', playAt:0.66, label:'LinkedIn Learning inside Copilot' }
         // Hidden 2026-08-04 (per Dani): the two stills below the demo
         // { type:'image', src:'assets/MCP-video-in-chat.jpg',     label:'Video player inside the chat' },
@@ -1177,7 +1177,7 @@
 
       if (m.type === 'video') {
         const vid = document.createElement('video');
-        vid.poster = m.src.replace(/\.mp4$/, '-poster.jpg');  // first-frame fallback
+        vid.poster = m.src.replace(/\.mp4(\?.*)?$/, '-poster.jpg');  // first-frame fallback (tolerates ?v= cache-bust)
         vid.src = m.srcDesktop || m.src;  // desktop panel uses the HD source
         vid.muted = true;
         vid.playsInline = true;
@@ -1432,7 +1432,7 @@
         node = document.createElement('video');
         // Poster (first frame) guarantees the clip always shows something even
         // when iOS won't play an off-screen video — no more blank/disappearing.
-        node.poster = m.src.replace(/\.mp4$/, '-poster.jpg');
+        node.poster = m.src.replace(/\.mp4(\?.*)?$/, '-poster.jpg');
         node.muted = true;
         node.defaultMuted = true;
         node.setAttribute('muted', '');
