@@ -1236,8 +1236,8 @@
       // AI Library temporarily hidden
     ]},
     { section: 'Info', items: [
-      { label:'intro', cmd:'intro' },   // back to the landing page (was 'clear')
-      { label:'about', cmd:'about' },
+      { label:'Intro', cmd:'intro' },   // back to the landing page (was 'clear')
+      { label:'About', cmd:'about' },
     ]},
     { section: '', items: [
       { dynamic:'mode' },
@@ -1248,7 +1248,7 @@
   function resolveItem(item) {
     if (item.dynamic === 'mode') {
       const designer = document.body.classList.contains('light');
-      return { label: designer ? 'dark mode' : 'light mode',
+      return { label: designer ? 'Dark mode' : 'Light mode',
                cmd:   designer ? 'dark'      : 'light' };
     }
     return item;
