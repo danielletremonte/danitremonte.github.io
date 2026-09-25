@@ -1101,7 +1101,7 @@
   let currentTopic = null; // 'p0'..'p2' | 'about' — one topic on screen at a time
 
   const projects = [
-    { id:1, name:'ChatGPT & LinkedIn Learning MCP',
+    { id:1, name:'ChatGPT & LinkedIn Learning Agent',
       tags:'AI product design  ·  0→1 product  ·  Ambiguity & complexity',
       desc:['Brought LinkedIn Learning inside AI platforms like ChatGPT and','Copilot through an open-standard (MCP) integration. The goal was to','meet users where they were and give them access to their learning tools.'],
       media:[
@@ -1231,8 +1231,8 @@
   // Palette groups — command only, no descriptions
   const paletteGroups = [
     { section: 'Projects', items: [
-      { label:'Everydrop',             cmd:'everydrop'             },
-      { label:'LinkedIn Learning MCP', cmd:'linkedin learning mcp' },
+      { label:'Everydrop',               cmd:'everydrop'               },
+      { label:'LinkedIn Learning Agent', cmd:'linkedin learning agent' },
       // AI Library temporarily hidden
     ]},
     { section: 'Info', items: [
@@ -1653,8 +1653,8 @@
     resetChips();
   }
 
-  // Project command names, in project order ('mcp' kept as a short alias)
-  const projCmds = ['linkedin learning mcp', 'everydrop', 'ai library'];
+  // Project command names, in project order ('mcp' and 'agent' kept as short aliases)
+  const projCmds = ['linkedin learning agent', 'everydrop', 'ai library'];
   const HIDDEN_PROJECTS = new Set([2]); // AI Library temporarily hidden
 
   // Command for the next visible project that isn't the current one
@@ -1670,7 +1670,7 @@
   function projFromCmd(lower) {
     let idx = -1;
     if (projCmds.includes(lower)) idx = projCmds.indexOf(lower);
-    else if (lower === 'mcp') idx = 0;
+    else if (lower === 'mcp' || lower === 'agent') idx = 0;
     else if (/^(open|project) [1-3]$/.test(lower)) idx = parseInt(lower.split(' ')[1]) - 1;
     return HIDDEN_PROJECTS.has(idx) ? -1 : idx;
   }
